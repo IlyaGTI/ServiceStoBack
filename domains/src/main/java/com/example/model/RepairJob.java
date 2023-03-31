@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Service {
+public class RepairJob {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

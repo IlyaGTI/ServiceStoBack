@@ -29,7 +29,7 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "service_id")
     )
-    private List<Service> services;
+    private List<RepairJob> services;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;

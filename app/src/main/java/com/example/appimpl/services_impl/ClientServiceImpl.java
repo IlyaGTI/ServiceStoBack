@@ -2,6 +2,7 @@ package com.example.appimpl.services_impl;
 
 import com.example.app.repositories.ClientRepository;
 import com.example.app.services.ClientService;
+import com.example.exception.ClientNotFoundException;
 import com.example.model.Client;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,5 +19,11 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public Client createNewClient(Client client) {
         return clientRepository.save(client);
+    }
+
+    @Override
+    public Client findById(Long clientId) {
+        return clientRepository.findById(clientId)
+                .orElseThrow(() -> new ClientNotFoundException(clientId));
     }
 }
