@@ -15,6 +15,6 @@ public class NewClientRequestDto {
     private String email;
     @NotBlank
     private String address;
-    @NotBlank
+
     private String notes;
 }
