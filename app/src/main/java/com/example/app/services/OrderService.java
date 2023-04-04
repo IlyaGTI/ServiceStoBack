@@ -3,6 +3,7 @@ package com.example.app.services;
 import com.example.enums.OrderStatus;
 import com.example.model.Order;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,5 +15,11 @@ public interface OrderService {
 
     Optional<Order> findAllOrderByClientId(Long clientId);
 
-    Order changeOrderStatus(Long id, OrderStatus status);
+    Optional<Order> findDoneOrderByTwoDate(LocalDateTime startDate, LocalDateTime endDate);
+
+    List<Order> findAllOrderByOrderStatus(OrderStatus orderStatus);
+
+    void canceledOrder(Long id);
+
+    void finishOrder(Long id);
 }

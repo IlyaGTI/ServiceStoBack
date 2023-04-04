@@ -6,6 +6,8 @@ import com.example.app.services.ClientService;
 import com.example.app.services.OrderService;
 import com.example.enums.OrderStatus;
 import com.example.exception.ClientNotFoundException;
+import com.example.exception.OrderCancellationException;
+import com.example.exception.OrderFinishedException;
 import com.example.exception.OrderNotFoundException;
 import com.example.model.Client;
 import com.example.model.Order;
@@ -43,17 +45,44 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Optional<Order> findDoneOrderByTwoDate(LocalDateTime startDate, LocalDateTime endDate) {
+        return orderRepository.findDoneOrdersByTwoDates(startDate, endDate);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Order> findAllOrderByOrderStatus(OrderStatus orderStatus) {
+        return orderRepository.findAllByStatus(orderStatus);
+    }
+
+    @Override
     @Transactional
-    public Order changeOrderStatus(Long id, OrderStatus status) {
+    public void canceledOrder(Long id) {
         Order order = findOrderById(id);
-        if (status == OrderStatus.DONE) {
-           order.setCompletionDate(LocalDateTime.now());
-            log.info("CompletionDate for order with id = ({}) successfully changed", id);
+
+        if (order.getStatus() == OrderStatus.DONE) {
+            throw new OrderCancellationException(id);
         }
-        order.setStatus(status);
+
+        order.setStatus(OrderStatus.CANCELED);
         orderRepository.save(order);
-        log.info("Status for order with id = ({}) successfully updated", id);
-        return order;
+        log.info("Order for with id = ({}) successfully canceled", id);
+    }
+
+    @Override
+    @Transactional
+    public void finishOrder(Long id) {
+        Order order = findOrderById(id);
+
+        if (order.getStatus() == OrderStatus.CANCELED) {
+            throw new OrderFinishedException(id);
+        }
+
+        order.setStatus(OrderStatus.DONE);
+        orderRepository.save(order);
+        log.info("Order for with id = ({}) successfully finish", id);
+
     }
 
     @Override
