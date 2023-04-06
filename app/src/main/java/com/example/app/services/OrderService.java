@@ -22,4 +22,6 @@ public interface OrderService {
     void canceledOrder(Long id);
 
     void finishOrder(Long id);
+
+    void setInProgress(Long id);
 }

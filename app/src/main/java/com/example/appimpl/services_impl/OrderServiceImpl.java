@@ -7,7 +7,7 @@ import com.example.app.services.OrderService;
 import com.example.enums.OrderStatus;
 import com.example.exception.ClientNotFoundException;
 import com.example.exception.OrderCancellationException;
-import com.example.exception.OrderFinishedException;
+import com.example.exception.OrderSetStatusException;
 import com.example.exception.OrderNotFoundException;
 import com.example.model.Client;
 import com.example.model.Order;
@@ -67,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
 
         order.setStatus(OrderStatus.CANCELED);
         orderRepository.save(order);
-        log.info("Order for with id = ({}) successfully canceled", id);
+        log.info("Order with id = ({}) successfully canceled", id);
     }
 
     @Override
@@ -76,13 +76,27 @@ public class OrderServiceImpl implements OrderService {
         Order order = findOrderById(id);
 
         if (order.getStatus() == OrderStatus.CANCELED) {
-            throw new OrderFinishedException(id);
+            throw new OrderSetStatusException(id);
         }
 
         order.setStatus(OrderStatus.DONE);
         orderRepository.save(order);
-        log.info("Order for with id = ({}) successfully finish", id);
+        log.info("Order with id = ({}) successfully finish", id);
 
+    }
+
+    @Override
+    @Transactional
+    public void setInProgress(Long id) {
+        Order order = findOrderById(id);
+
+        if (order.getStatus() == OrderStatus.CANCELED) {
+            throw new OrderSetStatusException(id);
+        }
+
+        order.setStatus(OrderStatus.IN_PROGRESS);
+        orderRepository.save(order);
+        log.info("Order with id = ({}) set status In Progress ", id);
     }
 
     @Override

@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderFacade {
     private final OrderService orderService;
-    private final OrderMapper orderMapper;
 
     public void createNewOrder(Long id, List<Long> jobsIds) {
         orderService.createOrder(id, jobsIds);
@@ -28,9 +27,15 @@ public class OrderFacade {
     public void canceledOrder(Long orderId) {
         orderService.canceledOrder(orderId);
     }
+
     public void finishOrder(Long orderId) {
-        orderService.canceledOrder(orderId);
+        orderService.finishOrder(orderId);
     }
+
+    public void setInProgress(Long orderId) {
+        orderService.setInProgress(orderId);
+    }
+
     public Optional<OrderResponseDto> getAllOrdersByClientId(Long clientId) {
         return orderService.findAllOrderByClientId(clientId)
                 .map(order -> OrderMapper.INSTANCE.createOrderResponseDto(order,

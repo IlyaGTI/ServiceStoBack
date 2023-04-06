@@ -2,6 +2,7 @@ package com.example.facade;
 
 import com.example.app.services.ClientService;
 import com.example.dto.request.NewClientRequestDto;
+import com.example.dto.response.ClientResponseDto;
 import com.example.mapper.ClientMapper;
 import com.example.model.Client;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,14 @@ public class ClientFacade {
 
     private final ClientMapper clientMapper;
     private final ClientService clientService;
+
     public void registerNewClient(NewClientRequestDto dto) {
         Client client = clientMapper.newClientRequestDtoToClient(dto);
         clientService.createNewClient(client);
     }
+
+    public ClientResponseDto getClientByNumber(String phoneNumber) {
+        return clientMapper.clientToClientResponseDto(clientService.findByPhoneNumber(phoneNumber));
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.example.mapper;
 
+import com.example.dto.request.CreateNewRepairJobRequestDto;
 import com.example.dto.response.RepairJobResponseDto;
 import com.example.model.RepairJob;
 import org.mapstruct.Mapper;
@@ -15,4 +16,6 @@ public interface RepairJobMapper {
     RepairJobResponseDto repairJobToRepairJobResponseDto(RepairJob repairJob);
 
     List<RepairJobResponseDto> repairJobsToRepairJobResponseDtos(List<RepairJob> repairJobs);
+
+    RepairJob repairJobResponseDtoToRepairJob(CreateNewRepairJobRequestDto dto);
 }

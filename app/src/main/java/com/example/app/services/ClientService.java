@@ -7,4 +7,6 @@ public interface ClientService {
     Client createNewClient(Client client);
 
     Client findById(Long id);
+
+    Client findByPhoneNumber(String phoneNumber);
 }
